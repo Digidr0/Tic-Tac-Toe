@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,21 +8,22 @@
     <title>Tic Tac Toe!</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <h1>Tic-Tac-Toe</h1>
-        <button>New Game</button>
+        <button class="new-game">New Game</button>
     </header>
     <div class="main content">
         <div class="info">
             <div class="player-one container">
-                <p class="player-one name">Player 1: <span class="score">13</span></p>
+                <p class="player-one name"> Player 1: </p><span class="player-one score"> 0 points</span>
             </div>
             <div class="turn container">
-                <p class="turn text"><span>Player</span> turn</p>
+                <p class="turn text"><span class="turn player">Player</span> turn</p>
             </div>
             <div class="player-two container">
-                <p class="player-two name">Player 2: <span class="score">11</span></p>
+                <p class="player-two name">Player 2:</p> <span class="player-two score"> 0 points</span>
             </div>
         </div>
         <div class="grid">
@@ -36,6 +38,22 @@
             <div class="block eight" value="8"></div>
         </div>
     </div>
+
+    <div class="form">
+        <form class="player-form">
+            <label for="player-one">Player one name:</label>
+            <input type="text" class="player-one-input" placeholder="Steve" required>
+
+            <label for="author">Player two name:</label>
+            <input type="text" class="player-two-input" placeholder="Garold" required>
+            <div class="checkbox container">
+                <label for="AI">AI</label>
+                <input type="checkbox" class="AI checkbox">
+            </div>
+        </form>
+        <button class="start btn">Start</button>
+    </div>
 </body>
 <script src="script.js"></script>
+
 </html>
