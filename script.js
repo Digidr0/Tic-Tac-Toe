@@ -29,7 +29,7 @@ const gameBoard = (() => {
     blocks.forEach(function (e, index) {
       e.textContent = board[index];
       if (e.textContent == "O") {
-        e.style.color = "var(--col-accent2)";
+        e.style.color = "var(--col-accent1)";
       } else {
         e.style.color = "var(--col-accent)";
       }
@@ -101,10 +101,15 @@ const checkWinner = () => {
       winner = gameBoard.currentPlayer;
       winner.score++;
       winner.container.classList.remove("animate");
-      winner.container.classList.add("animate");
+      //instant adding animation doesn't work
+      setTimeout(() => {
+        winner.container.classList.add("animate");
+      }, 10);
+
       playerOneScore.textContent = `${gameBoard.player1.score} points`;
       playerTwoScore.textContent = `${gameBoard.player2.score} points`;
       turnText.textContent = "Winner is: " + winner.name;
+      gameBoard.currentPlayer = gameBoard.player2;
       blocks.forEach((e) => {
         if (
           e.getAttribute("value") == item[0] ||
@@ -122,18 +127,18 @@ function AIchoice() {
   gameBoard.currentPlayer = gameBoard.player2;
   if (gameBoard.board[4] == "") {
     gameBoard.setField(4, gameBoard.currentPlayer.sign);
-    console.log("AI choice is:" + 4 + " block");
+    console.log("AI choice is:" + 4 + " block"); //log ai 4th choise
   } else {
     for (let i = 0; i < 10; i++) {
+      //for 10 times
       let random = Math.floor(Math.random() * 8);
       if (gameBoard.board[random] == "") {
         console.log("AI choice is: " + (random + 1) + " block");
-        gameBoard.setField(random, gameBoard.currentPlayer.sign);
-        if (i == 5){
-          console.warn("Can't set block");
+        gameBoard.setField(random, gameBoard.currentPlayer.sign); //log ai random choise
+        if (i == 5) {
+          console.warn("Can't set block"); //log if all blocks are full
         }
         break;
-        
       }
     }
   }
@@ -145,9 +150,11 @@ function nextPlayer() {
   if (gameBoard.currentPlayer == gameBoard.player2) {
     gameBoard.currentPlayer = gameBoard.player1;
     currentPlayerSpan.textContent = gameBoard.currentPlayer.name;
+    document.documentElement.style.setProperty(`--col-current`, "var(--col-accent)");
   } else {
     gameBoard.currentPlayer = gameBoard.player2;
     currentPlayerSpan.textContent = gameBoard.currentPlayer.name;
+    document.documentElement.style.setProperty(`--col-current`, "var(--col-accent1)");
   }
 }
 
@@ -165,6 +172,7 @@ blocks.forEach((e) => {
         gameBoard.setField(i, gameBoard.currentPlayer.sign);
         if (winner == "") {
           AIchoice();
+          checkWinner();
         }
       }
     }
@@ -173,8 +181,12 @@ blocks.forEach((e) => {
 
 newGameButton.addEventListener("click", gameBoard.newGame);
 startBtn.addEventListener("click", () => {
-  gameBoard.player1.name = playerOneInput.value;
-  gameBoard.player2.name = playerTwoInput.value;
+  if (playerOneInput.value !== "") {
+    gameBoard.player1.name = playerOneInput.value;
+  }
+  if (playerOneInput.value !== "") {
+    gameBoard.player2.name = playerTwoInput.value;
+  }
   playerOneName.textContent = gameBoard.player1.name;
   playerTwoName.textContent = gameBoard.player2.name;
   playerOneScore.textContent = `${gameBoard.player1.score} points`;
@@ -183,7 +195,7 @@ startBtn.addEventListener("click", () => {
   currentPlayerSpan.textContent = gameBoard.currentPlayer.name;
   console.log("AI turn: " + AiCheckbox.checked);
   if (AiCheckbox.checked) {
-    pcPlayer = true
+    pcPlayer = true;
   }
 
   formContainer.classList.add("none");
